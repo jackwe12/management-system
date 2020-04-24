@@ -1,6 +1,8 @@
 import React from 'react';
 import './login.css';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import {connect} from 'react-redux';
+import * as action from './store/actions/auth';
 
 class NormalLoginForm extends React.Component {
   handleSubmit = e => {
@@ -8,7 +10,13 @@ class NormalLoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        this.props.isAuth(values.username, values.password, false)
       }
+      //if the state of auth currently is true then direct to home page
+      if (this.props.isAuthenticated){
+        this.props.history.push('/');
+      }
+      console.log(this.props)
     });
   };
 
@@ -45,7 +53,10 @@ class NormalLoginForm extends React.Component {
           <a className="login-form-forgot" href="/forgetPassword">
             Forgot password
           </a>
-          <Button href="/" type="primary" htmlType="submit" className="login-form-button">
+          {/* <Button href="/" type="primary" htmlType="submit" className="login-form-button">
+            Log in
+          </Button> */}
+          <Button onSubmit={this.handleSubmit} type="primary" htmlType="submit" className="login-form-button">
             Log in
           </Button>
           Or <a href="register">register now!</a>
@@ -55,9 +66,21 @@ class NormalLoginForm extends React.Component {
 }
 }
 
-// export default NormalLoginForm
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
 
-export default WrappedNormalLoginForm;
+const mapStateToProps = state => {
+  return {
+      isFetching: state.auth.isFetching,
+      error: state.auth.error,
+      isAuthenticated: state.auth.isAuthenticated,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+      isAuth: (name, password) => dispatch(action.auth(name, password, false)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm);
 

@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Login from './login';
 import Home from './home';
 import './main.css';
-
+import ProtectedRoute from './protectedRoute';
 function Main (){
     return (
         <Router>
@@ -12,7 +12,8 @@ function Main (){
             <Route path="/course" component = {Home} />
             <Route path="/interview" component = {Home} />
             <Route path="/teacher" component = {Home} /> */}
-            <Route path="/" exact={true} component= {Home} />
+            {/* <Route path="/" exact={true} component= {Home} /> */}
+            <ProtectedRoute path="/" exact component= {Home} />
         </Router>
     )
 }
