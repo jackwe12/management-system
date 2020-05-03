@@ -5,3 +5,12 @@
     margin: 16px 28px 16px 0;
     float: left;
   }
+
+  .log{
+    position: absolute;
+    right: 10px;
+    top: 0;
+    height:4rem;
+    vertical-align: middle;  
+      
+  }

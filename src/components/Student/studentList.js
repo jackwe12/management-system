@@ -1,17 +1,17 @@
 import { Layout,  Breadcrumb } from 'antd';
 import React from 'react';
-import './home.css';
+// import './home.css';
 
 const { Content } = Layout;
 
-class CourseList extends React.Component {
+class StudentList extends React.Component {
 
   render() {
     return (
         <Content style={{ margin: '0 16px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>Course</Breadcrumb.Item>
-              <Breadcrumb.Item>Course List</Breadcrumb.Item>
+              <Breadcrumb.Item>Student</Breadcrumb.Item>
+              <Breadcrumb.Item>Student List</Breadcrumb.Item>
             </Breadcrumb>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}></div>
         </Content> 
@@ -27,4 +27,4 @@ class CourseList extends React.Component {
 
 
 
-export default CourseList;
+export default StudentList;

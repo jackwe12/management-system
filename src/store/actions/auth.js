@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-
+import '../../config/axiosSetting';
+import servicePath from '../../config/apiUrl';
 
 //ref: https://auth0.com/blog/secure-your-react-and-redux-app-with-jwt-authentication/
 export const authStart = () => {
@@ -21,11 +22,17 @@ export const authFail = (err) => {
         err:err
     }
 }
+export const authLogOut = (err) => {
+    return{
+        type:actionTypes.AUTH_LOGOUT,
+        err:err
+    }
+}
 
 export const auth = (name, password, isSignup) => {
     return dispatch => {
         dispatch(authStart());
-        const url = 'http://localhost:8413/teacher/teaLogin';
+        const url = servicePath.teacherLogin;
         const authData = {
             //req.body.name & req.body.password
                 name: name,

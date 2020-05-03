@@ -1,11 +1,14 @@
 import {Redirect, Route} from "react-router-dom";
 import React from "react";
-import {connect} from "react-redux";
+// import {connect} from "react-redux";
 
-const ProtectedRoute = ({component: Component, isAuthenticated, ...rest}) => (
+//check if we have token or not 
+// const isAuthenticated = (localStorage.getItem('token')? true: false);
+
+const ProtectedRoute = ({component: Component, ...rest}) => (
     <Route {...rest}
            render={(props) => (
-                isAuthenticated === true
+                localStorage.getItem('token') 
                    ? <Component {...props} />
                    : <Redirect to={{
                        pathname: '/login',
@@ -13,11 +16,13 @@ const ProtectedRoute = ({component: Component, isAuthenticated, ...rest}) => (
            )}/>
 );
 
-const mapStateToProps = state => {
-    return {
-        //if is true, then can log in
-        isAuthenticated: state.auth.isAuthenticated ,
-    };
-};
+// const mapStateToProps = state => {
+//     return {
+//         //if is true, then can log in
+//         isAuthenticated: state.auth.isAuthenticated ,
+//     };
+// };
 
-export default connect(mapStateToProps, null, null, {pure: false})(ProtectedRoute);
+// export default connect(mapStateToProps, null, null, {pure: false})(ProtectedRoute);
+
+export default ProtectedRoute;
