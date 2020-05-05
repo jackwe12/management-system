@@ -1,9 +1,11 @@
 import axios from 'axios';
 // import {browserHistory} from 'react-router-dom';
 import {createHashHistory}from 'history';
+import {message} from 'antd';
 
 const instance = axios.create({
     baseURL: 'http://localhost:8413/',
+    //cors?
     withCredentials: true,
     timeout: 3000
 });
@@ -23,7 +25,7 @@ instance.interceptors.request.use((config) =>{
 instance.interceptors.response.use((response)=>{
     if (response.data.code === 555){
         localStorage.removeItem('token');
-        console.log('login expired!');
+        message.warn('login expired or not authenticated login')
         createHashHistory().push('/login');
     }
     return response
@@ -31,7 +33,7 @@ instance.interceptors.response.use((response)=>{
     console.log(err)
     return Promise.reject(err)
 })
-
+//?
 class http {
     static async get(url, params){
         return await instance.get(url, {params});
