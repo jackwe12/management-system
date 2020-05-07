@@ -5,10 +5,12 @@ import React from "react";
 //check if we have token or not 
 // const isAuthenticated = (localStorage.getItem('token')? true: false);
 
+//有token就傳到component, 否則導回login
 const ProtectedRoute = ({component: Component, ...rest}) => (
     <Route {...rest}
            render={(props) => (
                 localStorage.getItem('token') 
+                //    2>1
                    ? <Component {...props} />
                    : <Redirect to={{
                        pathname: '/login',

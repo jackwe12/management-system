@@ -1,30 +1,16 @@
 import { Layout, Menu, Icon, Button, Breadcrumb } from 'antd';
 import React from 'react';
-import './home.css';
+import '../../styles/home.css'
 import { Link } from 'react-router-dom';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import {createHashHistory}from 'history';
-
-// import StudentList from '../Student/studentList';
-// import InterviewArrangement from '../Interview/interview';
-// import CourseList from '../Course/course';
-// import TeacherList from '../Teacher/teacher';
-// import AddStudent from '../Student/addStudent';
-// import AddCourse from '../Course/addCourse';
-// import AddTeacher from '../Teacher/addTeacher';
-// import CourseType from '../Course/courseType';
-// import {connect} from 'react-redux';
-// import * as action from '../../store/actions/auth';
+import RouteContent from '../content';
 import {homeMenu} from '../../data/menu';
 import {useState} from 'react';
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
-// class Home extends React.Component {
-  // state = {
-  //   collapsed: false,
-  // };
   function Home(props){
     const [collapsed, setCollapsed] = useState(false);
 
@@ -93,18 +79,8 @@ const { SubMenu } = Menu;
             </Breadcrumb>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}></div>
         </Content> 
-        {/* <Switch>
-            <Route path="/student/studentList" component = {StudentList} />
-            <Route path="/student/addStudent" component = {AddStudent} />
-            <Route path="/course/courseList" component = {CourseList} />
-            <Route path="/course/addCourse" component = {AddCourse} />
-            <Route path="/course/courseType" component = {CourseType} />
-            <Route path="/interview/interviewArrangement" component = {InterviewArrangement} />
-            <Route path="/teacher/addTeacher" component = {AddTeacher} />
-            <Route path="/teacher/teacherList" component = {TeacherList} />
-            <Route path="/" />
-        </Switch>  */}
-
+        <RouteContent/>
+        
       </Layout>
       </Layout>
     </Layout>
