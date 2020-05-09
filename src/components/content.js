@@ -1,14 +1,15 @@
 import React, {Suspense}from 'react';
-import {BrowserRouter as  Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import {Spin} from 'antd';
-const  StudentList = React.lazy(() => import('./Student/studentList'));
-const  AddStudent = React.lazy(() => import('./Student/addStudent'));
-const  CourseList = React.lazy(() => import('./Course/course'));
-const  CourseType = React.lazy(() => import('./Course/courseType'));
-const  AddCourse = React.lazy(() => import('./Course/addCourse'));
-const  InterviewArrangement = React.lazy(() => import('./Interview/interview'));
-const  AddTeacher = React.lazy(() => import('./Teacher/addTeacher'));
-const  TeacherList = React.lazy(() => import('./Teacher/teacher'));
+
+const  StudentList = React.lazy(() => import('../pages/Student/studentList'));
+const  AddStudent = React.lazy(() => import('../pages//Student/addStudent'));
+const  CourseList = React.lazy(() => import('../pages//Course/course'));
+const  CourseType = React.lazy(() => import('../pages//Course/courseType'));
+const  AddCourse = React.lazy(() => import('../pages//Course/addCourse'));
+const  InterviewArrangement = React.lazy(() => import('../pages//Interview/interview'));
+const  AddTeacher = React.lazy(() => import('../pages//Teacher/addTeacher'));
+const  TeacherList = React.lazy(() => import('../pages//Teacher/teacher'));
 
 
 function RouteContent () {

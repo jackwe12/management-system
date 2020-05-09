@@ -1,7 +1,6 @@
 import {Redirect, Route} from "react-router-dom";
 import React from "react";
 // import {connect} from "react-redux";
-
 //check if we have token or not 
 // const isAuthenticated = (localStorage.getItem('token')? true: false);
 
@@ -14,6 +13,7 @@ const ProtectedRoute = ({component: Component, ...rest}) => (
                    ? <Component {...props} />
                    : <Redirect to={{
                        pathname: '/login',
+                       state: {error:'You have to login first!'}
                    }}/>
            )}/>
 );

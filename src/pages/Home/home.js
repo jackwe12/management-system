@@ -4,7 +4,7 @@ import '../../styles/home.css'
 import { Link } from 'react-router-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {createHashHistory}from 'history';
-import RouteContent from '../content';
+import RouteContent from '../../components/content';
 import {homeMenu} from '../../data/menu';
 import {useState} from 'react';
 

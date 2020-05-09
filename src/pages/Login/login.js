@@ -1,10 +1,20 @@
 import React from 'react';
 import '../../styles/login.css';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
-
+import {useEffect} from 'react'
 import {teacherLogin} from '../../config/httpRouter';
 
 function NormalLoginForm (props) {
+  //當進入protected route失敗 會被redirect, 並傳入props.location.state.error
+  //避免props.location.state不存在，先給定
+  const { state = {} } = props.location;
+
+  useEffect(() => {
+   if (state.error){
+    message.warn(state.error, 1)
+   }
+
+  }, [state.error])
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -60,7 +70,6 @@ function NormalLoginForm (props) {
           <a className="login-form-forgot" href="/forgetPassword">
             Forgot password
           </a>
-
           <Button onSubmit={handleSubmit} type="primary" htmlType="submit" className="login-form-button">
             Log in
           </Button>
