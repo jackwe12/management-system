@@ -11,7 +11,8 @@ function NormalLoginForm (props) {
 
   useEffect(() => {
    if (state.error){
-    message.warn(state.error, 1)
+    message.warn(state.error, 1);
+    // console.log(state.prevPath)
    }
 
   }, [state.error])
@@ -22,18 +23,18 @@ function NormalLoginForm (props) {
 
       if (!err) {
         console.log('Received values of form: ', values);
-        // this.props.isAuth(values.username, values.password, false)
-        teacherLogin(values)
+       let data = {name:values.username, password:values.password}
+        teacherLogin(data)
         .then(res=>{
           if(!res.data.error) message.success('login success', 1)
           localStorage.setItem('token', res.data.datas.token);
           if (localStorage.getItem('token')){
-            props.history.push('/home')
+            if (state.prevPath) props.history.push(state.prevPath)
+            else props.history.push('/home')
           }        
         })
         .catch(err=>message.warn('wrong username or password'))
       }
-      // if the state of auth currently is true then direct to home page
     });
   };
 

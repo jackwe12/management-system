@@ -17,7 +17,7 @@ function RouteContent () {
      
         <Suspense fallback = {<div><Spin tip="Loading..."/> </div>}>
             <Switch>
-                <Route path="/student/studentList" component = {StudentList} />
+                <Route path="/student/studentList" breadcrumbName="Student List" component = {StudentList} />
                 <Route path="/student/addStudent" component = {AddStudent} />
                 <Route path="/course/courseList" component = {CourseList} />
                 <Route path="/course/addCourse" component = {AddCourse} />

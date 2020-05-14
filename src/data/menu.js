@@ -1,5 +1,16 @@
 export const homeMenu = [
-    {
+    {   //single menu
+        menuType: 0,
+        iconType:'home',
+        title:'Home Page',
+        menuItem:[
+            {
+                link:'/',
+            },
+        ],
+    },
+    {   
+        //submenu
         iconType:'calendar',
         title:'Manage Students',
         menuItem:[

@@ -6,6 +6,9 @@ import {message} from 'antd';
 const instance = axios.create({
     baseURL: 'http://localhost:8413/',
     //cors?
+    headers: {
+        // 'Access-Control-Allow-Origin': '*',
+    },
     withCredentials: true,
     timeout: 3000
 });
@@ -30,7 +33,7 @@ instance.interceptors.response.use((response)=>{
     }
     return response
 }, (err)=>{
-    console.log(err)
+    // console.log(err)
     return Promise.reject(err)
 })
 
