@@ -7,7 +7,7 @@ const instance = axios.create({
     baseURL: 'http://localhost:8413/',
     //cors?
     headers: {
-        // 'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*',
     },
     withCredentials: true,
     timeout: 3000

@@ -12,15 +12,10 @@ const { Search } = Input;
 
 const StudentList = () => {
   const [dataSource, data, setData, searchData, setSearchData, studentListColumns] = useStudent();
-  // let dataSource = [
-
-  // ];
-
-  // const [data, setData] = useState([]);
-  // const [searchData, setSearchData] = useState([]);
 
   //initialize the list
   useEffect(() => {    
+
     getAllStudent()
     .then(res => {
       // console.log(res.data.datas);
@@ -42,8 +37,9 @@ const StudentList = () => {
     })
     .catch((e)=>console.log(e));
 
+
     //?
-   }, [])
+   }, )
 
 
 

@@ -5,7 +5,8 @@ import {
   Form,
   Select,
   Input,
-  Button
+  Button,
+  message
 } from 'antd';
 import {addStudent} from '../../config/httpRouter';
 
@@ -45,6 +46,8 @@ const AddStudent = (props) => {
       props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
+
+          if (!values.student_email || !values.student_type || !values.course || !values.address) return message.warn('must not empty', 2000)
           let data = {
             student_name:values.student_email,
             student_type:values.student_type[0],
@@ -58,6 +61,7 @@ const AddStudent = (props) => {
           .catch(e=>console.log(e))
         }
       });
+
     };
 
  
