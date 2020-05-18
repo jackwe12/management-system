@@ -1,5 +1,5 @@
 import React ,{useState} from 'react';
-import {addStudentForm as form} from '../../data/studentData'
+// import {addStudentForm as form} from '../../data/studentData'
 import {
   Layout,
   Form,
@@ -13,11 +13,88 @@ import {addStudent} from '../../config/httpRouter';
 const { Option } = Select;
 const { Content } = Layout;
 
-// const provinceData = ['Zhejiang', 'Jiangsu'];
-// const cityData = {
-//   Zhejiang: ['Hangzhou', 'Ningbo', 'Wenzhou'],
-//   Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang'],
-// };
+
+export const addStudentForm = [
+  { 
+    type:'input',
+    title:'Student Email',
+    input:'student_email',
+    message:'',
+    placeholder:'Student Email',
+  },
+  { 
+    type:'multiple',
+    title:'Student Type',
+    placeholder:'Select multiple Student Type',
+    input:'student_type',
+    message:'',
+    options:[
+      {
+        value: 1,
+        input: 'Developer'
+      },
+      {
+        value: 2,
+        input: 'Tester'
+      }
+    ],
+  },
+  { 
+    type:'multiple',
+    title:'Address',
+    input:'address',
+    placeholder:'Select multiple address',
+    message:'',
+    options:[
+      {
+        value: 'New Zeeland',
+        input: 'New Zeeland'
+      },
+      {
+        value: 'Australia',
+        input: 'Australia',
+      },
+      {
+        value: 'China',
+        input: 'China',
+      },
+      {
+        value: 'US',
+        input: 'US'
+      }
+    ],
+  },
+  { 
+    type:'coordinate',
+    title:'Course',
+    input:'course',
+    message:'',
+    mainOptions:[
+      'Math', 'Physics'
+    ],
+    secondOptions:{
+      Math: [
+        {
+        value: 1,
+        input:'Test1',
+      }, 
+      { value: 2,
+        input:'Test2'
+      }],
+      Physics: [
+      {
+        value:3,
+        input:'Test3',
+      }, 
+      {
+        value:4,
+        input:'Test4',
+      }]
+    }
+
+
+  }
+]
 
 const AddStudent = (props) => {
 
@@ -28,8 +105,9 @@ const AddStudent = (props) => {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
     };
+
     const handleSubjectChange = (value, secondOptions) => {
-      console.log(value, secondOptions)
+      // console.log(value, secondOptions)
       //讓second出現選項
       setCourses(secondOptions[value]);
       //給定預設
@@ -45,7 +123,7 @@ const AddStudent = (props) => {
       e.preventDefault();
       props.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          // console.log('Received values of form: ', values);
 
           if (!values.student_email || !values.student_type || !values.course || !values.address) return message.warn('must not empty', 2000)
           let data = {
@@ -56,7 +134,12 @@ const AddStudent = (props) => {
           }
           addStudent(data)
           .then(res=>{
-            console.log(res)
+            if (res.data.code === 1) return message.warn('Paramater incorrect')
+            else if(res.data.code === 2) return message.warn('User has already existed')
+            //code === 0
+            message.success('update new student successfully!');
+            //antd -reset form
+            props.form.resetFields();
           })
           .catch(e=>console.log(e))
         }
@@ -74,8 +157,8 @@ const AddStudent = (props) => {
         <br/>
         <br/>
 
-            <Form {...formItemLayout} onSubmit={handleSubmit}>
-            {form.map( i => {
+            <Form {...formItemLayout} id='addStudentForm' onSubmit={handleSubmit}>
+            {addStudentForm.map( i => {
               switch(i.type){
                 case 'input':
                   return (
@@ -125,7 +208,7 @@ const AddStudent = (props) => {
                           onChange={onSecondChange}
                         >
                           {courses.map( course => (
-                            <Option key={course}>{course}</Option>
+                            <Option key={course} value={course.value}>{course.input}</Option>
                           ))}
                         </Select>)}
 
@@ -152,7 +235,7 @@ const AddStudent = (props) => {
 
 
 
-
+//就是這方法改造，返回一個新的react component, 會提供
 const WrappedDemo = Form.create({ name: 'validate_other' })(AddStudent);
 
 export default WrappedDemo;

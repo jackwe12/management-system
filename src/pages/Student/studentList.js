@@ -1,24 +1,103 @@
-import { Layout} from 'antd';
-import React, {useEffect} from 'react';
-import {getAllStudent} from '../../config/httpRouter';
-import { Table, Input} from 'antd';
-// import {studentListColumns as columns} from '../../data/studentData'
+import React, {useEffect, useState} from 'react';
+import {getAllStudent, deleteStudent} from '../../config/httpRouter';
+import { Table, Input, Button, Modal, message} from 'antd';
 
-import useStudent from '../../hooks/useStudent'
-const { Content } = Layout;
 const { Search } = Input;
+const { confirm } = Modal;
 
 
 
 const StudentList = () => {
-  const [dataSource, data, setData, searchData, setSearchData, studentListColumns] = useStudent();
+  let dataSource = [
 
-  //initialize the list
+  ];
+  const [data, setData] = useState([]);
+  const [searchData, setSearchData] = useState([]);
+
+  const studentListColumns = [
+     
+    {
+      title: 'Order',
+      dataIndex: 'order',
+      key: 'order',
+    },
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Student Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Current Course',
+      dataIndex: 'course',
+      key: 'course',
+    },
+    {
+      title: 'Student Type',
+      dataIndex: 'studentType',
+      key: 'studentType',
+    },
+    {
+      title: 'Update Time',
+      dataIndex: 'update_time',
+      key: 'update_time',
+    },
+    {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+        render: (id) => <Button onClick={()=>deleteList(id)} >Delete</Button>,
+      },
+  ];
+
+
+  //initialize the list, only active when first rendered
   useEffect(() => {    
+    getList();
+  }, [])
 
+
+  //delete list and pop confirm
+  function deleteList(id) {
+    confirm({
+      title: 'Do you want to delete these items?',
+      content: 'When clicked the OK button, the data can never be recovered.',
+
+      onOk() {
+        return new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 10);
+          //if ok, delete list and update list & search list
+          deleteStudent(id)
+          .then(res => {
+              message.success('delete successfully')
+              let newData = data.filter( i => i.id !== id);
+              //re-order
+              newData.forEach((i, idx)=> i.order = idx + 1);
+              //update list
+              setData(newData);
+              setSearchData(newData);
+          })
+          .catch( e => console.log(e))
+        })
+        .catch((e) => console.log(e));
+      },
+      
+      onCancel() {},
+
+    });
+};
+  function getList(){
     getAllStudent()
     .then(res => {
-      // console.log(res.data.datas);
       res.data.datas.forEach((item , idx) => {
         dataSource.push({
           key: idx + 1,
@@ -36,10 +115,9 @@ const StudentList = () => {
      setSearchData(dataSource);
     })
     .catch((e)=>console.log(e));
+  }
 
 
-    //?
-   }, )
 
 
 
@@ -56,18 +134,10 @@ const StudentList = () => {
   }
 
     return (
-        <Content style={{ margin: '0 16px' }}>
-            <div>
-              <br/>
-              <br/>
-              <br/>
-              <Search placeholder="Search for student email" style={{width:200}} onSearch={value => search(value)} enterButton />
-              <br/>
-              <br/>
-              <br/>
-            </div>
+        <>
+            <Search placeholder="Search for student email" style={{width:300,'marginTop':100,'marginBottom':100}} onSearch={value => search(value)} enterButton />
             <Table columns={studentListColumns} dataSource={data} />
-        </Content> 
+        </>    
 
 
     );

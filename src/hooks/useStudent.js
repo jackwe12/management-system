@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
-import { Button, Modal} from 'antd';
-import {deleteStudent} from '../config/httpRouter';
+// import React, {useState} from 'react';
+// import { Button, Modal} from 'antd';
+// import {deleteStudent} from '../config/httpRouter';
 
 
-const { confirm } = Modal;
+// const { confirm } = Modal;
 
  const useStudent = () =>{
-    let dataSource = [
+    // let dataSource = [
 
-    ];
+    // ];
   
-    const [data, setData] = useState([]);
-    const [searchData, setSearchData] = useState([]);
+    // const [data, setData] = useState([]);
+    // const [searchData, setSearchData] = useState([]);
 
     function showConfirm(id) {
         confirm({
@@ -37,54 +37,54 @@ const { confirm } = Modal;
         });
     };
 
-    const studentListColumns = [
+    // const studentListColumns = [
      
-        {
-          title: 'Order',
-          dataIndex: 'order',
-          key: 'order',
-        //   render: text => <a>{text}</a>,
-        },
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
-        },
-        {
-          title: 'Address',
-          dataIndex: 'address',
-          key: 'address',
-        },
-        {
-          title: 'Student Email',
-          dataIndex: 'email',
-          key: 'email',
-        },
-        {
-          title: 'Current Course',
-          dataIndex: 'course',
-          key: 'course',
-        },
-        {
-          title: 'Student Type',
-          dataIndex: 'studentType',
-          key: 'studentType',
-        },
-        {
-          title: 'Update Time',
-          dataIndex: 'update_time',
-          key: 'update_time',
-        },
-        {
-            title: 'Action',
-            dataIndex: 'action',
-            key: 'action',
-            render: (id) => <Button onClick={()=>showConfirm(id)}  >Delete</Button>,
-          },
-      ];
+    //     {
+    //       title: 'Order',
+    //       dataIndex: 'order',
+    //       key: 'order',
+    //     //   render: text => <a>{text}</a>,
+    //     },
+    //     {
+    //       title: 'ID',
+    //       dataIndex: 'id',
+    //       key: 'id',
+    //     },
+    //     {
+    //       title: 'Address',
+    //       dataIndex: 'address',
+    //       key: 'address',
+    //     },
+    //     {
+    //       title: 'Student Email',
+    //       dataIndex: 'email',
+    //       key: 'email',
+    //     },
+    //     {
+    //       title: 'Current Course',
+    //       dataIndex: 'course',
+    //       key: 'course',
+    //     },
+    //     {
+    //       title: 'Student Type',
+    //       dataIndex: 'studentType',
+    //       key: 'studentType',
+    //     },
+    //     {
+    //       title: 'Update Time',
+    //       dataIndex: 'update_time',
+    //       key: 'update_time',
+    //     },
+    //     {
+    //         title: 'Action',
+    //         dataIndex: 'action',
+    //         key: 'action',
+    //         render: (id) => <Button onClick={()=>showConfirm(id)}  >Delete</Button>,
+    //       },
+    //   ];
 
 
-    return [dataSource, data, setData, searchData, setSearchData, studentListColumns, showConfirm]
+    // return [dataSource, data, setData, searchData, setSearchData, studentListColumns, showConfirm]
 }
 
 

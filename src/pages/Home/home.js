@@ -1,4 +1,4 @@
-import { Layout, Menu, Icon, Button, Breadcrumb } from 'antd';
+import { Layout, Menu, Icon, Button } from 'antd';
 import React from 'react';
 import '../../styles/home.css';
 import { Link } from 'react-router-dom';
@@ -7,43 +7,16 @@ import {createHashHistory}from 'history';
 import RouteContent from '../../components/content';
 import {homeMenu} from '../../data/menu';
 import {useState} from 'react';
-
+import Bread from '../../components/breadcrumb';
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
-const breadcrumbNameMap = {
-  '/student': 'Student',
-  '/student/studentList': 'StudentList',
-  '/student/addStudent': 'AddStudent',
-  '/course': 'Course',
-  '/course/courseType':'Course Type',
-  '/interview':'Interview',
-  '/interview/interviewArrangement':'Interview Arrangement',
-  '/teacher':'Teacher',
-  '/teacher/teacherList':'Teacher List',
-  '/teacher/addNewTeacher':'Add New Teacher'
-};
   function Home(props){
     const { location } = props;
     const [collapsed, setCollapsed] = useState(false);
 
 
-    const pathSnippets = location.pathname.split('/').filter(i => i);
-    const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-      const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-      return (
-        <Breadcrumb.Item key={url}>
-          <Link to={url}>{breadcrumbNameMap[url]}</Link>
-        </Breadcrumb.Item>
-      );
-    });
-    const breadcrumbItems = [
-      <Breadcrumb.Item key="home">
-        <Link to="/">Home</Link>
-      </Breadcrumb.Item>,
-    ].concat(extraBreadcrumbItems);
-    
 
     const onCollapse = collapsed => {
       setCollapsed(collapsed)
@@ -110,13 +83,7 @@ const breadcrumbNameMap = {
         </Sider>
         <Layout>
         <Content style={{ margin: '0 16px' }}>
-            {/* <Breadcrumb style={{ margin: '16px 0' }} routes={RouteContent}>
-              <Breadcrumb.Item></Breadcrumb.Item>
-              <Breadcrumb.Item></Breadcrumb.Item>
-            </Breadcrumb> */}
-            <Breadcrumb>{breadcrumbItems}</Breadcrumb>
-
-            {/* <div style={{ padding: 24, background: '#fff', minHeight: 360 }}></div> */}
+            <Bread location={location}/>
             <RouteContent/>
         </Content> 
 
