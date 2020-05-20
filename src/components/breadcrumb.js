@@ -1,24 +1,15 @@
 import {  Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import breadcrumbNameMap from '../data/breadCrumbNameMap';
+import {withRouter} from 'react-router-dom'
 
 
+//加上withRouter((props) => {})
+//這樣組件就可以含有路由訊息(aka 當下url)
 
-const breadcrumbNameMap = {
-    '/student': 'Student',
-    '/student/studentList': 'StudentList',
-    '/student/addStudent': 'AddStudent',
-    '/course': 'Course',
-    '/course/courseType':'Course Type',
-    '/interview':'Interview',
-    '/interview/interviewArrangement':'Interview Arrangement',
-    '/teacher':'Teacher',
-    '/teacher/teacherList':'Teacher List',
-    '/teacher/addNewTeacher':'Add New Teacher'
-  };
-
-
-const Bread = (props) =>{
+const Bread = withRouter((props) =>{
+    // console.log(props.location)
     const { location } = props;
     const pathSnippets = location.pathname.split('/').filter(i => i);
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
@@ -37,5 +28,6 @@ const Bread = (props) =>{
     return (
         <Breadcrumb>{breadcrumbItems}</Breadcrumb>
     )
-}
+});
 export default Bread;
+

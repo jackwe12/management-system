@@ -19,15 +19,15 @@ export const addStudentForm = [
     type:'input',
     title:'Student Email',
     input:'student_email',
-    message:'',
+    message:'Student Email is required',
     placeholder:'Student Email',
   },
   { 
-    type:'multiple',
+    type:'select',
     title:'Student Type',
-    placeholder:'Select multiple Student Type',
+    placeholder:'Select Student Type',
     input:'student_type',
-    message:'',
+    message:'Student Type is requited',
     options:[
       {
         value: 1,
@@ -40,11 +40,11 @@ export const addStudentForm = [
     ],
   },
   { 
-    type:'multiple',
+    type:'select',
     title:'Address',
     input:'address',
-    placeholder:'Select multiple address',
-    message:'',
+    placeholder:'Select address',
+    message:'Address is required',
     options:[
       {
         value: 'New Zeeland',
@@ -68,7 +68,7 @@ export const addStudentForm = [
     type:'coordinate',
     title:'Course',
     input:'course',
-    message:'',
+    message:'Course is required',
     mainOptions:[
       'Math', 'Physics'
     ],
@@ -107,7 +107,6 @@ const AddStudent = (props) => {
     };
 
     const handleSubjectChange = (value, secondOptions) => {
-      // console.log(value, secondOptions)
       //讓second出現選項
       setCourses(secondOptions[value]);
       //給定預設
@@ -124,8 +123,9 @@ const AddStudent = (props) => {
       props.form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
-
-          if (!values.student_email || !values.student_type || !values.course || !values.address) return message.warn('must not empty', 2000)
+          
+          //建議使用ant design 預設的校驗功能
+          // if (!values.student_email || !values.student_type || !values.course || !values.address) return message.warn('must not empty', 2000)
           let data = {
             student_name:values.student_email,
             student_type:values.student_type[0],
@@ -164,26 +164,23 @@ const AddStudent = (props) => {
                   return (
                     <Form.Item key={i.title} label={i.title} {...formItemLayout}>
                     {getFieldDecorator(i.input, {
-                        rules: [
-                          { message: {} },
-                        ],
+                      rules: [{ required: true, message: i.message }],
                       })(
                       <Input placeholder={i.placeholder} />,
                       )}
                     </Form.Item>
                     );
-                case 'multiple':
+                case 'select':
                     return(
-                    <Form.Item key={i.title} label={i.title}>
+                    <Form.Item label={i.title} key = {i.title}>
                       {getFieldDecorator(i.input, {
-                          initialvalue:''
+                        rules: [{ required: true, message: i.message }],
                       })(
-                      <Select mode="multiple" placeholder={i.placeholder}>
+                        <Select placeholder={i.placeholder}>
                         {i.options.map( j => {
                           return <Option value={j.value} key={j.value}>{j.input}</Option>
-
                         })}
-                      </Select>,
+                        </Select>,
                       )}
                     </Form.Item>
                     );
@@ -200,6 +197,7 @@ const AddStudent = (props) => {
                           ))}
                         </Select>
                         {getFieldDecorator(i.input, {
+                          rules: [{ required: true, message: i.message }],
                         })
                         (<Select
                           style={{ width: 120 }}

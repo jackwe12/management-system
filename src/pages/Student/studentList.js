@@ -135,7 +135,7 @@ const StudentList = () => {
 
     return (
         <>
-            <Search placeholder="Search for student email" style={{width:300,'marginTop':100,'marginBottom':100}} onSearch={value => search(value)} enterButton />
+            <Search placeholder="Search for student email" style={{width:300,'marginTop':30,'marginBottom':30}} onSearch={value => search(value)} enterButton />
             <Table columns={studentListColumns} dataSource={data} />
         </>    
 
