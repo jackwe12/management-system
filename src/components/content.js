@@ -18,7 +18,9 @@ function RouteContent () {
         <Suspense fallback = {<div><Spin tip="Loading..."/> </div>}>
             <Switch>
                 <Route path="/student/studentList" breadcrumbName="Student List" component = {StudentList} />
-                <Route path="/student/addStudent" component = {AddStudent} />
+                {/* <Route path="/student/addStudent/" component = {AddStudent} /> */}
+                {/*傳給addStudent key={路徑}，所以每當id改變，都會造成re-render,避免沒有更動}*/}
+                <Route path="/student/addStudent/" component = {props=><AddStudent {...props} key={window.location.pathname}/>} />
                 <Route path="/course/courseList" component = {CourseList} />
                 <Route path="/course/addCourse" component = {AddCourse} />
                 <Route path="/course/courseType" component = {CourseType} />

@@ -19,7 +19,7 @@ export const homeMenu = [
                 item:'Student List'
             },
             {
-                link:'/student/addStudent',
+                link:'/student/addStudent/0',
                 item:'Add New Student'
             }
         ],

@@ -1,5 +1,4 @@
-import React ,{useState} from 'react';
-// import {addStudentForm as form} from '../../data/studentData'
+import React ,{useState, useEffect} from 'react';
 import {
   Layout,
   Form,
@@ -8,7 +7,8 @@ import {
   Button,
   message
 } from 'antd';
-import {addStudent} from '../../config/httpRouter';
+
+import {addStudent, getStudentById, updateStudentById} from '../../config/httpRouter';
 
 const { Option } = Select;
 const { Content } = Layout;
@@ -97,10 +97,12 @@ export const addStudentForm = [
 ]
 
 const AddStudent = (props) => {
-
+    let {location, history} = props;
+    let id = getUrl();
     const [courses, setCourses] = useState([]);
-    const [second, setSecond] = useState();
+    // const [second, setSecond] = useState();
 
+    const [initial, setInitial] = useState({});
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -110,44 +112,133 @@ const AddStudent = (props) => {
       //讓second出現選項
       setCourses(secondOptions[value]);
       //給定預設
-      setSecond(secondOptions[value][0])
+      // setSecond(secondOptions[value][0])
 
     };
-    const onSecondChange = value => {
-      //給second賦予值
-      setSecond(value)
-    };
+    // const onSecondChange = value => {
+    //   //給second賦予值
+    //   setSecond(value)
+    // };
 
     const handleSubmit = e => {
       e.preventDefault();
       props.form.validateFields((err, values) => {
         if (!err) {
           // console.log('Received values of form: ', values);
-          
-          //建議使用ant design 預設的校驗功能
-          // if (!values.student_email || !values.student_type || !values.course || !values.address) return message.warn('must not empty', 2000)
-          let data = {
-            student_name:values.student_email,
-            student_type:values.student_type[0],
-            course_id:values.course,
-            adress:values.address[0],
-          }
-          addStudent(data)
-          .then(res=>{
-            if (res.data.code === 1) return message.warn('Paramater incorrect')
-            else if(res.data.code === 2) return message.warn('User has already existed')
-            //code === 0
-            message.success('update new student successfully!');
-            //antd -reset form
-            props.form.resetFields();
-          })
-          .catch(e=>console.log(e))
+          let id = getUrl();
+          console.log(typeof id)
+          if(id === 0)
+            addStudentList(values);
+          else
+            updateStudent(id, values);      
         }
       });
 
     };
 
- 
+    function updateStudent(id, values){
+      // console.log(values)
+      let data = {
+        student_name:values.student_email,
+        student_type:values.student_type,
+        course_id:values.course,
+        adress:values.address,
+        student_id:id
+      }
+      console.log(data)
+      updateStudentById(data)
+      .then(res=>{
+        if (res.data.code === 1) return message.warn('Paramater incorrect')
+        else if(res.data.code === 2) return message.warn('User has already existed')
+        message.success('Update new student successfully!');
+        props.form.resetFields();
+        //push back
+        history.push('/student/studentList')
+      })
+      .catch(e=>console.log(e))
+    }
+    function addStudentList(values){
+      let data = {
+        student_name:values.student_email,
+        student_type:values.student_type,
+        course_id:values.course,
+        adress:values.address,
+      }
+      addStudent(data)
+      .then(res=>{
+        if (res.data.code === 1) return message.warn('Paramater incorrect')
+        else if(res.data.code === 2) return message.warn('User has already existed')
+        //code === 0
+        message.success('Add new student successfully!');
+        //antd -reset form
+        props.form.resetFields();
+      })
+      .catch(e=>console.log(e))
+    }
+
+    function getStudentInfo(id){
+      getStudentById(id)
+      .then((res)=>{
+        // console.log(res.data.datas);
+        if (!res.data.datas.length) {
+          message.warn('User not exists!');
+          return history.push('/student/studentList');
+        };
+        let info = res.data.datas[0];
+        console.log(info)
+        let main;
+        let secondOptions = addStudentForm[3].secondOptions;
+        switch(info.course_id){
+          case 1: 
+          main = 'Math';
+          break;
+          case 2: 
+          main = 'Math';
+          break;
+          case 3: 
+          main = 'Physics';
+          break;
+          case 4: 
+          main = 'Physics';
+          break;
+          default:
+            break;
+        }
+        setCourses(secondOptions[main]);
+        setInitial(
+          {
+            'student_email':info.student_name,
+            //!!因為這邊 input & values不同，不可傳錯, 否則參數無效 i.e. '1' instead of 'Developer'
+            'student_type': info.type_id,
+            'course' : info.course_id,
+            'address' : info.adress,
+            'mainOption': main
+        })
+
+      })
+    }
+
+    function getUrl(){
+      let url = location.pathname;
+      let arr= url.split('/');
+      //string => number
+      let id = Number(arr.pop());
+      return id
+    }
+
+    function cancel(){
+      return history.push('/student/studentList');
+    }
+
+    useEffect(() => {
+      let id = getUrl();
+      if (id === 0) return 
+      // console.log()
+      // setSubmitBtn(false);
+      getStudentInfo(id);     
+
+    }, [])
+
 
     const { getFieldDecorator } = props.form;
 
@@ -165,6 +256,7 @@ const AddStudent = (props) => {
                     <Form.Item key={i.title} label={i.title} {...formItemLayout}>
                     {getFieldDecorator(i.input, {
                       rules: [{ required: true, message: i.message }],
+                      initialValue:initial[i.input]
                       })(
                       <Input placeholder={i.placeholder} />,
                       )}
@@ -175,8 +267,9 @@ const AddStudent = (props) => {
                     <Form.Item label={i.title} key = {i.title}>
                       {getFieldDecorator(i.input, {
                         rules: [{ required: true, message: i.message }],
+                        initialValue:initial[i.input]
                       })(
-                        <Select placeholder={i.placeholder}>
+                        <Select  placeholder={i.placeholder}>
                         {i.options.map( j => {
                           return <Option value={j.value} key={j.value}>{j.input}</Option>
                         })}
@@ -187,7 +280,11 @@ const AddStudent = (props) => {
                 case 'coordinate':
                     return(
                       <Form.Item key={i.title} label={i.title}>
-                        <Select
+                      {getFieldDecorator(i.mainOptions, {
+                          rules: [{ required: true, message: i.message }],
+                          initialValue: initial['mainOption']
+                        })
+                        (<Select
                           // defaultValue={}
                           style={{ width: 120 }}
                           onChange={(value)=>handleSubjectChange(value, i.secondOptions)}
@@ -195,15 +292,15 @@ const AddStudent = (props) => {
                           {i.mainOptions.map(main => (
                             <Option key={main}>{main}</Option>
                           ))}
-                        </Select>
+                        </Select>)}
                         {getFieldDecorator(i.input, {
                           rules: [{ required: true, message: i.message }],
+                          initialValue:initial[i.input]
                         })
                         (<Select
                           style={{ width: 120 }}
-                          // value={second}
-                          setFieldValue = {second}
-                          onChange={onSecondChange}
+                          // setFieldValue = {second}
+                          // onChange={onSecondChange}
                         >
                           {courses.map( course => (
                             <Option key={course} value={course.value}>{course.input}</Option>
@@ -219,8 +316,14 @@ const AddStudent = (props) => {
             })}
             <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
               <Button type="primary" htmlType="submit" >
-                Submit
+                {id === 0 ? 'Submit': 'Update'}
               </Button>
+              {id !== 0 ? 
+                <Button type="primary" style={{marginLeft:20}} onClick={cancel} >
+                Cancel
+              </Button>
+              :<></>}
+
             </Form.Item>
 
             </Form>

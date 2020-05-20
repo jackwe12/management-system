@@ -7,3 +7,5 @@ export const teacherLogin = (data) => http.post(servicePath.teacherLogin, data);
 export const getAllStudent = () => http.get(servicePath.getAllStudent);
 export const addStudent = (data) => http.post(servicePath.addStudent, data);
 export const deleteStudent = (id) => http.get(servicePath.deleteStudent + `?student_id=${id}` );
+export const getStudentById = (id) => http.get(servicePath.getStudentById + `?id=${id}` );
+export const updateStudentById = (data) => http.post(servicePath.updateStudent, data);

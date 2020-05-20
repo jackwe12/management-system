@@ -7,7 +7,8 @@ const { confirm } = Modal;
 
 
 
-const StudentList = () => {
+const StudentList = (props) => {
+  let {history} = props;
   let dataSource = [
 
   ];
@@ -55,8 +56,13 @@ const StudentList = () => {
         title: 'Action',
         dataIndex: 'action',
         key: 'action',
-        render: (id) => <Button onClick={()=>deleteList(id)} >Delete</Button>,
-      },
+        render: (id) => (
+          <>
+            <Button onClick={()=>deleteList(id)} >Delete</Button>
+            <Button onClick={()=>editList(id)} >Edit</Button>
+          </>
+        ),
+    },
   ];
 
 
@@ -65,7 +71,11 @@ const StudentList = () => {
     getList();
   }, [])
 
-
+  //edit list and push to addList page
+  function editList(id){
+    history.push('/student/addStudent/' + id)
+  }
+  
   //delete list and pop confirm
   function deleteList(id) {
     confirm({
